@@ -3,10 +3,6 @@ layout: post
 title: Documentation
 ---
 
-- [Principles](Principles.md)
-- [Using Buckle](Buckle.md)
-- [Using the Repl](Repl.md)
-- [Diagnostic Codes](DiagnosticCodes.md)
 - Tutorials (Under Construction)
   <!-- - [Hello World](Tutorial/HelloWorld.md) -->
   <!-- - [Calculator](Tutorial/Calculator.md) -->
