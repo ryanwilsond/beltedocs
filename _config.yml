@@ -1,7 +1,7 @@
 title: Belte
 email: belteindustries@gmail.com
 author: Ryan Wilson
-baseurl: "/belte" # the subpath of your site, e.g. /blog
+baseurl: "/beltedocs" # the subpath of your site, e.g. /blog
 url: https://ryanwilsond.github.io # root address of the site
 github_username: ryanwilsond
 description: > # description of the site (multiple lines allowed)
