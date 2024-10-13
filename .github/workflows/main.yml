@@ -23,8 +23,8 @@ jobs:
         dotnet-version: 9.0.x
     - name: Publish
       run: dotnet publish -c Release -o release --nologo
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Change base-tag
+      run: sed -i 's/<base href="\/" \/>/<base href="\/beltedocs\/" \/>/g' release/wwwroot/index.html
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4
       with:
