@@ -1,0 +1,1 @@
+dotnet run beltedocs.csproj

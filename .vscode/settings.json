@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "*.csproj": "msbuild",
+    },
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true,
+    },
+    "editor.rulers": [
+        80,
+        120,
+    ],
+    "omnisharp.disableMSBuildDiagnosticWarning": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.formatOnSave": true,
+    "dotnet.defaultSolution": "beltedocs.sln",
+}
