@@ -1,12 +1,82 @@
+@using GaelJ.BlazorCodeMirror6
+@using GaelJ.BlazorCodeMirror6.Commands
+@using GaelJ.BlazorCodeMirror6.Models
+
 @page "/lab"
 
 <PageTitle>Lab</PageTitle>
 
-<div class="split left">
-    <div class="lines"></div>
-    <textarea id="code" name="code" autofocus="true" spellcheck="false" wrap="off">Console.PrintLine("Hello, world!");</textarea>
+<div class="split left code">
+    <div class="top-row">
+        <a>Code</a>
+    </div>
+    <CodeMirror6Wrapper
+        IsWASM=@IsWASM
+        @bind-Doc=@InputText
+        @bind-Selection=@selectionRanges
+        Theme=@Theme
+        Language=@InputLanguage
+        AllowHorizontalResize=false
+        AllowVerticalResize=false
+        Setup=@InputSetup
+    />
 </div>
 
-<div class="split right">
-    <textarea id="result" name="result" spellcheck="false" readonly="true" wrap="off"></textarea>
+<div class="split right code">
+    <div class="top-row">
+        <a>Results</a>
+        <select @bind="ResultMode">
+            <option value="run">Run</option>
+            <option value="tree">Syntax Tree</option>
+            <option value="program">Bound Program</option>
+            <option value="cs">C#</option>
+            <option value="il">IL</option>
+        </select>
+    </div>
+    <CodeMirror6Wrapper
+        IsWASM=@IsWASM
+        @bind-Doc=@OutputText
+        @bind-Selection=@selectionRanges
+        Theme=@Theme
+        Language=@OutputLanguage
+        AllowHorizontalResize=false
+        AllowVerticalResize=false
+        ReadOnly=true
+        LineNumbers=false
+        HighlightActiveLine=false
+        HighlightActiveLineGutter=false
+        Setup=@OutputSetup
+    />
 </div>
+
+@code
+{
+    [Parameter] public bool IsWASM { get; set; }
+
+    private string? _resultMode = "run";
+    private string? ResultMode { get { return _resultMode; } set { _resultMode = value; } }
+    private string? _inputText = "Console.PrintLine(\"Hello, world!\");";
+    private string? InputText { get { return _inputText; } set { _inputText = value; UpdateOutput(); } }
+    private string? OutputText = "";
+    private List<SelectionRange>? selectionRanges;
+    private ThemeMirrorTheme Theme = ThemeMirrorTheme.OneDark;
+    private CodeMirrorLanguage InputLanguage = CodeMirrorLanguage.Csharp;
+    private CodeMirrorLanguage OutputLanguage = CodeMirrorLanguage.Csharp;
+    private readonly CodeMirrorSetup InputSetup = new() {
+        HighlightSelectionMatches = true,
+        ScrollToEnd = true,
+        BindMode = DocumentBindMode.OnDelayedInput,
+        FocusOnCreation = true,
+    };
+    private readonly CodeMirrorSetup OutputSetup = new() {
+        HighlightSelectionMatches = true,
+        ScrollToEnd = true,
+        BindMode = DocumentBindMode.OnDelayedInput,
+    };
+
+    private async void UpdateOutput() {
+        OutputText = _inputText;
+        // TODO Put Compiler code here
+        StateHasChanged();
+    }
+}
