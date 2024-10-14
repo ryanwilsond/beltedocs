@@ -1,6 +1,15 @@
 @using GaelJ.BlazorCodeMirror6
 @using GaelJ.BlazorCodeMirror6.Commands
 @using GaelJ.BlazorCodeMirror6.Models
+@using Buckle
+@using Buckle.CodeAnalysis
+@using Buckle.CodeAnalysis.Authoring
+@using Buckle.CodeAnalysis.Display
+@using Buckle.CodeAnalysis.Evaluating
+@using Buckle.CodeAnalysis.Symbols
+@using Buckle.CodeAnalysis.Syntax
+@using Buckle.CodeAnalysis.Text
+@using Buckle.Diagnostics
 
 @page "/lab"
 
@@ -54,7 +63,7 @@
     [Parameter] public bool IsWASM { get; set; }
 
     private string? _resultMode = "run";
-    private string? ResultMode { get { return _resultMode; } set { _resultMode = value; } }
+    private string? ResultMode { get { return _resultMode; } set { _resultMode = value; UpdateLanguage(); } }
     private string? _inputText = "Console.PrintLine(\"Hello, world!\");";
     private string? InputText { get { return _inputText; } set { _inputText = value; UpdateOutput(); } }
     private string? OutputText = "";
@@ -74,9 +83,29 @@
         BindMode = DocumentBindMode.OnDelayedInput,
     };
 
-    private async void UpdateOutput() {
+    private void UpdateOutput() {
         OutputText = _inputText;
-        // TODO Put Compiler code here
+        CallCompiler();
         StateHasChanged();
+    }
+
+    private void UpdateLanguage() {
+        if (_resultMode == "run")
+            OutputLanguage = CodeMirrorLanguage.PlainText;
+        else if (_resultMode == "tree")
+            OutputLanguage = CodeMirrorLanguage.Html;
+        else if (_resultMode == "program" || _resultMode == "cs")
+            OutputLanguage = CodeMirrorLanguage.Csharp;
+        else if (_resultMode == "il")
+            OutputLanguage = CodeMirrorLanguage.WebAssembly;
+
+        UpdateOutput();
+    }
+
+    private void CallCompiler() {
+        var syntaxTree = SyntaxTree.Load("_", _inputText);
+        var compilation = Compilation.Create(
+            new CompilationOptions(BuildMode.Evaluate, )
+        )
     }
 }
